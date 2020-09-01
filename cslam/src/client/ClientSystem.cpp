@@ -37,10 +37,11 @@ ClientSystem::ClientSystem(ros::NodeHandle Nh, ros::NodeHandle NhPrivate, const 
     int ClientId;
 
     mNhPrivate.param("ClientId",ClientId,-1);
+    // 静态转换
     mClientId = static_cast<size_t>(ClientId);
 
     //+++++ Check settings files +++++
-
+    // 检查相机设置
     cv::FileStorage fsSettingsCam(strCamFile.c_str(), cv::FileStorage::READ);
     if(!fsSettingsCam.isOpened())
     {
@@ -49,16 +50,19 @@ ClientSystem::ClientSystem(ros::NodeHandle Nh, ros::NodeHandle NhPrivate, const 
     }
 
     //+++++ load vocabulary +++++
-
+    // 加载词典
     this->LoadVocabulary(strVocFile);
 
     //+++++ Create KeyFrame Database +++++
+    // 创建KF DB
     mpKFDB.reset(new KeyFrameDatabase(mpVoc));
 
     //+++++ Create the Map +++++
+    // 创建map
     mpMap.reset(new Map(mNh,mNhPrivate,mClientId,eSystemState::CLIENT));
     usleep(10000); //wait to avoid race conditions
     //+++++ Initialize Agent +++++
+    // 初始化客户端
     mpAgent.reset(new ClientHandler(mNh,mNhPrivate,mpVoc,mpKFDB,mpMap,mClientId,mpUID,eSystemState::CLIENT,strCamFile,nullptr));
     usleep(10000); //wait to avoid race conditions
     mpAgent->InitializeThreads();
@@ -67,7 +71,7 @@ ClientSystem::ClientSystem(ros::NodeHandle Nh, ros::NodeHandle NhPrivate, const 
     //++++++++++
     cout << endl << "Clientsystem initialized (Client ID: " << mClientId << ")" << endl;
 }
-
+// 加载ORB 字典
 void ClientSystem::LoadVocabulary(const string &strVocFile)
 {
     //Load ORB Vocabulary

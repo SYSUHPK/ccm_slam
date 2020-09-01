@@ -50,7 +50,7 @@ Communicator::Communicator(ccptr pCC, vocptr pVoc, mapptr pMap, dbptr pKFDB)
     //Topics
     std::stringstream* ss;
     string PubMapTopicName, MapInTopicName, SysType;
-
+    // pub-sub
     if(mpCC->mSysState == eSystemState::CLIENT)
     {
         SysType = "Client";
@@ -70,6 +70,7 @@ Communicator::Communicator(ccptr pCC, vocptr pVoc, mapptr pMap, dbptr pKFDB)
         SysType = "Server";
 
         //Subscriber
+        // server接收不太一样
         ss = new stringstream;
         *ss << "MapInTopicName" << mClientId;
         mNhPrivate.param(ss->str(),MapInTopicName,std::string("nospec"));

@@ -3,11 +3,13 @@
 
 <arg name="dist" default="0"/>
 <arg name="cam" default="$(find ccmslam)/conf/vi_euroc.yaml"/>
-
+  <!--这个应该就是nh_private：一般用来参数配置。在launch文件中param标签会把参数解释为/node/param_name,相当于（~param_name）
+    nh可以定义多个，相对之间的关系不清楚，但是在命名空间都与node名字相关，nh相关名称空间按照relative or global解释
+l   aunch文件中启动node时：ns参数可以定义node所在的名称空间/ns/nodename-->
   <group ns="ccmslam">
 
   <node pkg="tf" type="static_transform_publisher" name="linkC0_broadcaster" args="-100 300 5 -1.571 0 -2 world odomC0 100" /> 
-
+<!--如果你程序中起的节点名字和launch文件中name后面对应的名字不同，ros会采用name后面的名字作为节点名 -->
 <node pkg="ccmslam" type="ccmslamClientNode" name="ccmslamClientNode0" args="$(find ccmslam)/conf/ORBvoc.txt $(arg cam)" output="screen">
 
   <!-- ++++++++++++++++++++++++++++++++++++++++++++++ -->

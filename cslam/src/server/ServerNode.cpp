@@ -38,8 +38,9 @@ int main(int argc, char **argv) {
 
     ros::NodeHandle Nh;
     ros::NodeHandle NhPrivate("~");
-
+    // 调用server system
     boost::shared_ptr<cslam::ServerSystem> pSSys{new cslam::ServerSystem(Nh,NhPrivate,argv[1])};
+    // 初始化client端
     pSSys->InitializeClients();
 
 

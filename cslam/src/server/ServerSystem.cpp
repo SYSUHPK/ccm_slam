@@ -40,12 +40,12 @@ ServerSystem::ServerSystem(ros::NodeHandle Nh, ros::NodeHandle NhPrivate, const 
     }
 
     //+++++ load vocabulary +++++
-
+    // 加载词典
     this->LoadVocabulary(strVocFile);
-
+    // 创建KF DB
     //+++++ Create KeyFrame Database +++++
     this->InitializeKFDB();
-
+    // 创建map
     //+++++ Create the Map +++++
     this->InitializeMaps();
 
@@ -77,17 +77,20 @@ void ServerSystem::InitializeClients()
 
     #ifdef LOGGING
     mpClient0->InitializeThreads(mpLogger);
+    // threads里面有server
     #else
     mpClient0->InitializeThreads();
     #endif
 
     //Client 1
+    // 对于每一个client，都会创建一个client
     if(mNumOfClients > 1)
     {
         mpClient1.reset(new ClientHandler(mNh,mNhPrivate,mpVoc,mpKFDB,mpMap1,1,mpUID,eSystemState::SERVER,string(),mpViewer));
         #ifdef LOGGING
         mpClient1->InitializeThreads(mpLogger);
         #else
+        // 调用init_client和init_server
         mpClient1->InitializeThreads();
         #endif
     }

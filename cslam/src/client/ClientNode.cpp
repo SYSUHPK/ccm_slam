@@ -28,19 +28,20 @@
 #include <cslam/config.h>
 
 int main(int argc, char **argv) {
-
+    // 用CMakelist中的name修改
     ros::init(argc, argv, "CSLAM client node");
-
+    // error, not necessary
     if(argc != 3)
     {
         cerr << endl << "Usage: rosrun cslam clientnode path_to_vocabulary path_to_cam_params" << endl;
         ros::shutdown();
         return 1;
     }
-
+    // 两个句柄
+    // https://blog.csdn.net/u014587147/article/details/75647002?utm_source=blogxgwz0
     ros::NodeHandle Nh;
     ros::NodeHandle NhPrivate("~");
-
+    // 调用client system
     boost::shared_ptr<cslam::ClientSystem> pCSys{new cslam::ClientSystem(Nh,NhPrivate,argv[1],argv[2])};
 
     ROS_INFO("Started CSLAM client node...");

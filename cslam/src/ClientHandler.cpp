@@ -25,7 +25,9 @@
 #include <cslam/ClientHandler.h>
 
 namespace cslam {
-
+//例如，有一个节点，它的全局名称是 /sim1/pubvel，ROS 将其私有名称∼max_vel 转换至如下全局名称：/sim1/pubvel + ~max_vel⇒ /sim1/pubvel/max_vel 
+// 这种命名方式适用的地方是每个节点内部都有这样一些资源，这些资源只与本节点有关，
+// 而不会与其他节点打交道，这些资源就可以使用私有名称，与松耦合性相对的。
 ClientHandler::ClientHandler(ros::NodeHandle Nh, ros::NodeHandle NhPrivate, vocptr pVoc, dbptr pDB, mapptr pMap, size_t ClientId, uidptr pUID, eSystemState SysState, const string &strCamFile, viewptr pViewer)
     : mpVoc(pVoc),mpKFDB(pDB),mpMap(pMap),
       mNh(Nh),mNhPrivate(NhPrivate),
@@ -69,6 +71,7 @@ void ClientHandler::InitializeThreads()
     {
         this->InitializeClient();
     }
+    // server
     else if(mSysState == eSystemState::SERVER)
     {
         this->InitializeServer();
@@ -152,7 +155,7 @@ void ClientHandler::InitializeCC()
 
     delete ss;
 }
-
+// 初始化client
 void ClientHandler::InitializeClient()
 {
     cout << "Client " << mClientId << " --> Initialize Threads" << endl;
@@ -186,6 +189,7 @@ void ClientHandler::InitializeClient()
     usleep(10000);
 }
 
+// 初始化server
 void ClientHandler::InitializeServer()
 {
     cout << "Client " << mClientId << " --> Initialize Threads" << endl;
